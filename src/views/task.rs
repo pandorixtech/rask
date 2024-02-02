@@ -80,17 +80,19 @@ fn list_task_records(controller: &mut TaskCtrl) -> Table<'_> {
             //@TODO display error
         }
     }
-    Table::new(rows)
-        .header(header)
-        .block(Block::default().borders(Borders::ALL).title("Tasks"))
-        .highlight_style(selected_style)
-        .highlight_symbol(">> ")
-        .widths(&[
+    Table::new(
+        rows,
+        [
             Constraint::Max(6),
             Constraint::Max(30),
             Constraint::Max(30),
             Constraint::Percentage(30),
-        ])
+        ],
+    )
+    .header(header)
+    .block(Block::default().borders(Borders::ALL).title("Tasks"))
+    .highlight_style(selected_style)
+    .highlight_symbol(">> ")
 }
 
 fn get_task_form_fields(data: &TaskCtrl, show_selected: bool) -> Vec<Line<'_>> {

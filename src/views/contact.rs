@@ -65,17 +65,19 @@ fn list_project_records(controller: &mut ContactCtrl) -> Table<'_> {
             //@TODO display error
         }
     }
-    Table::new(rows)
-        .header(header)
-        .block(Block::default().borders(Borders::ALL).title("Contacts"))
-        .highlight_style(selected_style)
-        .highlight_symbol(">> ")
-        .widths(&[
+    Table::new(
+        rows,
+        [
             Constraint::Max(6),
             Constraint::Min(10),
             Constraint::Max(30),
             Constraint::Percentage(50),
-        ])
+        ],
+    )
+    .header(header)
+    .block(Block::default().borders(Borders::ALL).title("Contacts"))
+    .highlight_style(selected_style)
+    .highlight_symbol(">> ")
 }
 
 fn get_project_form_fields(data: &ContactCtrl, show_selected: bool) -> Vec<Line<'_>> {
