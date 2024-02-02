@@ -48,19 +48,24 @@ fn project_detail_col(ctrl: &mut DashboardCtrl, f: &mut Frame, area: Rect) {
             .map(|task| task.clone())
             .filter(|task| task.get("status").unwrap().parse::<i32>().unwrap() == status_id)
             .collect();
+        let col_focus = ctrl.scrum_col_focus;
+        let col_id = tstatus.get("id").unwrap().parse::<i32>().unwrap();
+        let col_name: String;
+        if col_focus == col_id {
+            col_name = format!("<{}>", tstatus.get("name").unwrap().clone());
+        } else {
+            col_name = tstatus.get("name").unwrap().clone();
+        }
         scrum_cols_content_count.push(status_content.len());
         scrum_cols_content.push(status_content.clone());
-        scrum_list_views.push(scrum_col_ui(
-            status_content.clone(),
-            tstatus.get("name").unwrap().clone(),
-        ));
+        scrum_list_views.push(scrum_col_ui(status_content.clone(), col_name.clone()));
     });
     let project_details = titled_box(project_name);
 
     let scrumcols = Layout::default()
         .direction(Direction::Horizontal)
         .margin(0)
-        .constraints(scrum_cols_constraint.as_ref())
+        .constraints(scrum_cols_constraint)
         .split(project_details.inner(area));
 
     scrum_list_views.reverse();
